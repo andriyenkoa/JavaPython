@@ -17,7 +17,6 @@ jobs:
       run: |
         docker build -t my-postgres-image -f Dockerfile .
         docker run -d --name my-postgres-container -p 5432:5432 my-postgres-image
-
     - name: Wait for PostgreSQL to start
       run: docker exec my-postgres-container sh -c "while ! pg_isready -h localhost; do sleep 1; done"
 
@@ -26,3 +25,4 @@ jobs:
         # Add your tests or other tasks here that use the PostgreSQL container.
         # For example:
         # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
+
