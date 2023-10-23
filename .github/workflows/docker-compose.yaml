@@ -1,48 +1,29 @@
-version: '3'
-services:
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: your_database_name
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
-    ports:
-      - "5432:5432"
+name: PostgreSQL Docker Container
 
-workflow:
-  on:
-    push:
-      branches:
-        - main
-        - master
-  jobs:
-    build:
-      runs-on: ubuntu-latest
+on:
+  push:
+    branches:
+      - main
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-        - name: Set up Docker Compose
-          run: |
-            docker --version
-            docker-compose --version
-            sudo service docker start
-            sudo usermod -aG docker $USER
-          continue-on-error: true
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-        - name: Build and run Docker Compose
-          run: |
-            docker-compose -f .github/workflows/docker-cimpose.yaml up -d
-          working-directory: .github/workflows
+    - name: Build and run PostgreSQL container
+      run: |
+        docker build -t my-postgres-image -f Dockerfile .
+        docker run -d --name my-postgres-container -p 5432:5432 my-postgres-image
 
-        - name: Wait for PostgreSQL to start
-          run: |
-            sleep 10 # Adjust this sleep duration as needed
-          continue-on-error: true
+    - name: Wait for PostgreSQL to start
+      run: docker exec my-postgres-container sh -c "while ! pg_isready -h localhost; do sleep 1; done"
 
-        - name: Stop and remove Docker Compose containers
-          run: |
-            docker-compose -f .github/workflows/docker-compose.yaml down
-          working-directory: .github/workflows
+    - name: Run tests or other tasks
+      run: |
+        # Add your tests or other tasks here that use the PostgreSQL container.
+        # For example:
+        # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
 
