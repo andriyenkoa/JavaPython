@@ -1,28 +1,43 @@
-name: Docker Compose Example
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: your_database_name
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+    ports:
+      - "5432:5432"
 
-on:
-  push:
-    branches:
-      - main
-      - master
-jobs:
-  build:
-    runs-on: ubuntu-latest
+workflow:
+  jobs:
+    build:
+      runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
 
-    - name: Set up Docker Compose
-      run: docker-compose -f .github/workflows/your-docker-compose.yml up -d
+        - name: Set up Docker Compose
+          run: |
+            docker --version
+            docker-compose --version
+            sudo service docker start
+            sudo usermod -aG docker $USER
+          continue-on-error: true
 
-    - name: Wait for services to start
-      run: sleep 10
+        - name: Build and run Docker Compose
+          run: |
+            docker-compose -f .github/workflows/docker-cimpose.yaml up -d
+          working-directory: .github/workflows
 
-    - name: Run tests
-      run: |
-        # You can add your tests or other steps here
+        - name: Wait for PostgreSQL to start
+          run: |
+            sleep 10 # Adjust this sleep duration as needed
+          continue-on-error: true
 
-    - name: Stop services
-      run: docker-compose down
+        - name: Stop and remove Docker Compose containers
+          run: |
+            docker-compose -f .github/workflows/docker-compose.yaml down
+          working-directory: .github/workflows
 
