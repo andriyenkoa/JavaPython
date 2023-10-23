@@ -29,5 +29,5 @@ jobs:
 
     - name: Run SQL script to create tables and insert data
         run: |
-          docker cp create_and_insert.sql my-postgres-container:/create_and_insert.sql
+          docker cp create_and_insert.sql my-postgres-container:/sampleSQL.sql
           psql -h localhost -U myuser -d mydatabase -f /sampleSQL.sql
