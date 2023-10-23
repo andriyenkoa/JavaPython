@@ -23,7 +23,5 @@ jobs:
 
     - name: Run tests or other tasks
       run: |
-        # Add your tests or other tasks here that use the PostgreSQL container.
-        # For example:
-        # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
+        - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
 
