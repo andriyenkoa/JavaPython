@@ -23,5 +23,11 @@ jobs:
 
     - name: Run tests or other tasks
       run: |
-        psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
+        # Add your tests or other tasks here that use the PostgreSQL container.
+        # For example:
+        # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
 
+    - name: Run SQL script to create tables and insert data
+        run: |
+          docker cp create_and_insert.sql my-postgres-container:/create_and_insert.sql
+          psql -h localhost -U myuser -d mydatabase -f /sampleSQL.sql
