@@ -16,7 +16,7 @@ CREATE TABLE user_details (
   gender varchar(10) DEFAULT NULL,
   pwd varchar(50) DEFAULT NULL,
   status tinyint(10) DEFAULT NULL
-)
+);
 
 --
 -- Dumping data for table `user_details`
