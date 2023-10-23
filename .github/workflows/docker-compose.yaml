@@ -27,6 +27,10 @@ jobs:
         # For example:
         # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
 
+    - name: Set up environment variables
+      run: |
+        echo "export PGPASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+
     - name: Run SQL script to create tables and insert data
       run: |
         docker cp sampleSQL.sql my-postgres-container:/sampleSQL.sql
