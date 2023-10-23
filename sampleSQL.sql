@@ -9,13 +9,13 @@
 --
 
 CREATE TABLE user_details (
-  user_id NOT NULL SERIAL PRIMARY KEY,
-  username varchar(255) DEFAULT NULL,
-  first_name varchar(50) DEFAULT NULL,
-  last_name varchar(50) DEFAULT NULL,
-  gender varchar(10) DEFAULT NULL,
-  pwd varchar(50) DEFAULT NULL,
-  status tinyint(10) DEFAULT NULL
+    user_id SERIAL PRIMARY KEY,
+    username varchar(255),
+    first_name varchar(50),
+    last_name varchar(50),
+    gender varchar(10),
+    pwd varchar(50),
+    status smallint
 );
 
 --
