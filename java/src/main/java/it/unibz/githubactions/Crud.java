@@ -12,9 +12,9 @@ import java.sql.SQLException;
 public class Crud 
 {
 	private static final String DRIVER = "org.postgresql.Driver";
-    private static final String URL = "jdbc:postgresql://localhost:5432/mydatabase";
-    private static final String USER = "myuser";
-    private static final String PASSWORD = "mypassword";
+	private static final String URL = "jdbc:postgresql://localhost:5432/mydatabase";
+	private static final String USER = "myuser";
+	private static final String PASSWORD = "mypassword";
 	
 	private int executeQuery(Connection con, String query, DBFunction<PreparedStatement> dbFunct) throws SQLException {
 		int result = 0;
@@ -63,14 +63,17 @@ public class Crud
 	}
 	
 	public void selectAll(Connection con) throws SQLException {
-		ResultSetFunction rsf = new ResultSetFunction(rs -> { System.out.println(rs.getInt("user_id")
-				 												+ " " + rs.getString("username")
-																+ " " + rs.getString("first_name")
-																+ " " + rs.getString("last_name")
-																+ " " + rs.getString("gender")	
-																+ " " + rs.getString("pwd")
-																+ " " + rs.getInt("status")	 			
-															   ); });
-		executeQuery(con, "SELECT * FROM user_details ORDER BY user_id", rsf);
+		MapperFunction mapper = rs -> {
+			System.out.println(rs.getInt("user_id")
+				+ " | " + rs.getString("username")
+				+ " | " + rs.getString("first_name")
+				+ " | " + rs.getString("last_name")
+				+ " | " + rs.getString("gender")	
+				+ " | " + rs.getString("pwd")
+				+ " | " + rs.getInt("status")
+			);
+		};
+		
+		executeQuery(con, "SELECT * FROM user_details ORDER BY user_id", new ResultSetFunction(mapper));
 	}
 }
