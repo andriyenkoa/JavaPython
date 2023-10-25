@@ -52,21 +52,13 @@ jobs:
     - name: Print the path of comment.txt
       run: echo "The full path of comment.txt would be $GITHUB_WORKSPACE/comment.txt"
 
-    - name: Upload Comment File
-      uses: actions/upload-artifact@v2
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6.1
       with:
-        name: comment
-        path: comment.txt
-
-    - name: Install jq
-      run: sudo apt-get install -y jq
-      
-    - name: Post Code Coverage Comment on PR
-      run: |
-        COMMENT_BODY=$(cat comment.txt)
-        COMMENT_BODY=$(echo "$COMMENT_BODY" | jq -R --slurp .)
-        curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -X POST \
-          -d "{\"body\": $COMMENT_BODY}" \
-          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+        paths: |
+          ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
+          ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
