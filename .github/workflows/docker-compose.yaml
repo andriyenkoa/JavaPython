@@ -45,11 +45,32 @@ jobs:
         # mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
         mvn test
         
+    # Generate JaCoCo Code Coverage Report
     - name: Generate Code Coverage Report
       run: mvn jacoco:report
 
-    - name: Post Code Coverage Comment in PR
-      uses: thollander/actions-comment-pull-request@v2
+    # Prepare and Post the Code Coverage Comment
+    - name: Prepare Code Coverage Comment
+      run: echo "Code coverage report is available [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})." > comment.txt
+
+    # Upload Comment Text as an Artifact
+    - name: Upload Comment File
+      uses: actions/upload-artifact@v2
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message: "Code coverage report: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        name: comment
+        path: comment.txt
+
+    # Post the Code Coverage Comment in the PR
+    - name: Post Code Coverage Comment on PR
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const fs = require('fs');
+          const comment = fs.readFileSync('../comment/comment.txt', 'utf8');
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
