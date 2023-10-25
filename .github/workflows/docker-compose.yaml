@@ -65,9 +65,12 @@ jobs:
         script: |
           const fs = require('fs');
           const comment = fs.readFileSync('comment.txt', 'utf8');
-          github.issues.createComment({
-            issue_number: context.issue.number,
+          github.rest.pulls.createReview({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: comment
+            pull_number: context.issue.number,
+            body: comment,
+            event: "COMMENT"
+          }).catch(err => {
+            console.error(err);
           });
