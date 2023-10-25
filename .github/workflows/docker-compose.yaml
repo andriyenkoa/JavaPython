@@ -49,7 +49,7 @@ jobs:
       run: mvn jacoco:report
 
     - name: Post Code Coverage Comment in PR
-      uses: thollander/actions-comment-pull-request@master
+      uses: thollander/actions-comment-pull-request@v2
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         message: "Code coverage report: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
