@@ -1,6 +1,5 @@
 package it.unibz.githubactions;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -12,16 +11,15 @@ public class Main
     public static void main( String[] args )
     {
 		Crud crud = new Crud();
-		Connection con = null;
 		try {
-			con = crud.openConnection();
-			crud.selectAll(con);
+			crud.openConnection();
+			crud.selectAll();
 		}
 		catch (SQLException ex) {
 			ex.printStackTrace();	
 		}
 		finally {
-			crud.closeConnection(con);
+			crud.closeConnection();
 		}	
     }
 }

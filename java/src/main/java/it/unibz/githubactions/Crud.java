@@ -16,6 +16,18 @@ public class Crud
 	private static final String USER = "myuser";
 	private static final String PASSWORD = "mypassword";
 	
+	private Connection con = null;
+	
+	static {
+		try {
+		  Class.forName(DRIVER);
+		} catch (Exception e) {
+		    System.out.println("Driver failed to register.");
+		    System.out.println(e.getMessage());
+		    System.exit(1);
+		}
+	}
+	
 	private int executeQuery(Connection con, String query, DBFunction<PreparedStatement> dbFunct) throws SQLException {
 		int result = 0;
 		
@@ -31,24 +43,15 @@ public class Crud
 		return result;
 	}
 	
-	static {
-		try {
-		  Class.forName(DRIVER);
-		} catch (Exception e) {
-		    System.out.println("Driver failed to register.");
-		    System.out.println(e.getMessage());
-		    System.exit(1);
-		}
-	}
 	
-	public Connection openConnection() throws SQLException {
+	
+	public void openConnection() throws SQLException {
 		System.out.println("Connecting ....");
-		Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+		this.con = DriverManager.getConnection(URL, USER, PASSWORD);
 		System.out.println("Connected to the database");
-		return con;
 	}
 	
-	public void closeConnection(Connection con) {
+	public void closeConnection() {
 		if (con != null) {
 			try {
 				con.close();
@@ -62,8 +65,9 @@ public class Crud
 			System.err.println("Cannot close a null connection");
 	}
 	
-	public void selectAll(Connection con) throws SQLException {
+	public void selectAll() throws SQLException {
 		MapperFunction mapper = rs -> {
+			
 			System.out.println(rs.getInt("user_id")
 				+ " | " + rs.getString("username")
 				+ " | " + rs.getString("first_name")
@@ -72,8 +76,21 @@ public class Crud
 				+ " | " + rs.getString("pwd")
 				+ " | " + rs.getInt("status")
 			);
+				
+				/*
+			System.out.printf("%d | %s | %s | %s | %s | %s | %d %n", 
+					rs.getInt("user_id"), rs.getString("username"), rs.getString("first_name")
+					, rs.getString("last_name"), rs.getString("gender"), rs.getString("pwd"),
+					, rs.getInt("status"));
+			*/
 		};
 		
 		executeQuery(con, "SELECT * FROM user_details ORDER BY user_id", new ResultSetFunction(mapper));
+	}
+	
+	public String selectUserNameById(int userId) throws SQLException {
+		StringMapperFunction mapper = new StringMapperFunction("username");
+		executeQuery(con, "SELECT username FROM user_details WHERE user_id=1", new ResultSetFunction(mapper));
+		return mapper.getValue();
 	}
 }
