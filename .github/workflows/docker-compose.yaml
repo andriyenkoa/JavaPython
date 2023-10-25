@@ -44,23 +44,19 @@ jobs:
         # Uncomment the next line to execute a select * in order to show the result set in the log
         # mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
         mvn test
-        
-    # Generate JaCoCo Code Coverage Report
-    - name: Generate Code Coverage Report
-      run: mvn jacoco:report
+      
+    - name: Build with Maven and Generate Code Coverage
+      run: mvn clean verify
 
-    # Prepare and Post the Code Coverage Comment
     - name: Prepare Code Coverage Comment
       run: echo "Code coverage report is available [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})." > comment.txt
 
-    # Upload Comment Text as an Artifact
     - name: Upload Comment File
       uses: actions/upload-artifact@v2
       with:
         name: comment
         path: comment.txt
 
-    # Post the Code Coverage Comment in the PR
     - name: Post Code Coverage Comment on PR
       uses: actions/github-script@v3
       with:
