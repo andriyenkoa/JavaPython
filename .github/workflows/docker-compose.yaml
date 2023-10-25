@@ -58,19 +58,15 @@ jobs:
         name: comment
         path: comment.txt
 
+    - name: Install jq
+      run: sudo apt-get install -y jq
+      
     - name: Post Code Coverage Comment on PR
-      uses: actions/github-script@v3
-      with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        script: |
-          const fs = require('fs');
-          const comment = fs.readFileSync('comment.txt', 'utf8');
-          github.rest.pulls.createReview({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.issue.number,
-            body: comment,
-            event: "COMMENT"
-          }).catch(err => {
-            console.error(err);
-          });
+      run: |
+        COMMENT_BODY=$(cat comment.txt)
+        COMMENT_BODY=$(echo "$COMMENT_BODY" | jq -R --slurp .)
+        curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -X POST \
+          -d "{\"body\": $COMMENT_BODY}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
