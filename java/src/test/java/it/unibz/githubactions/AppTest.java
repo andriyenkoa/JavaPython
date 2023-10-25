@@ -53,6 +53,7 @@ public class AppTest {
 		crud.update(id, id, newName, "Paolo", "Proni", "Male", "mypassword", 1);
 		assertEquals(newName, crud.selectUserNameById(id));
 		crud.update(id, id, oldName, "Paolo", "Proni", "Male", "mypassword", 1);
+		crud.delete(id);
 		crud.commitTransaction();
 	}
 	
