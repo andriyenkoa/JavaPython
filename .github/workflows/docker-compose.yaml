@@ -30,10 +30,17 @@ jobs:
       uses: stCarolas/setup-maven@v4.5
       with:
         maven-version: 3.9.5
+    
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles(’**/pom.xml’) }}
         
-    - name: Set up JDK 17
+    - name: Test the Java part
       run: | 
         cd ./java
         mvn compile
+        # Uncomment the next line to execute a select * in order to show the result set in the log
         mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
-      
+        
