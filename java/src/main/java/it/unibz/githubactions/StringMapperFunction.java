@@ -4,15 +4,22 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 
 public class StringMapperFunction implements MapperFunction {
-	String fieldName;
+	final String fieldName;
 	String value = null;
 	
 	public StringMapperFunction(String fieldName) {
 		this.fieldName = fieldName;
 	}
 	
+	public StringMapperFunction() {
+		this.fieldName = "";
+	}
+	
 	public void call(ResultSet rs) throws SQLException {
-		value = rs.getString(fieldName);
+		if (fieldName.isEmpty())
+			value = rs.getString(1);
+		else
+			value = rs.getString(fieldName);
 	}
 	
 	public void setValue(String value) {

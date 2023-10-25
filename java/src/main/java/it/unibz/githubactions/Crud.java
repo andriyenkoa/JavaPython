@@ -28,7 +28,7 @@ public class Crud
 		}
 	}
 	
-	private int executeQuery(Connection con, String query, DBFunction<PreparedStatement> dbFunct) throws SQLException {
+	private int executeQuery(String query, DBFunction<PreparedStatement> dbFunct) throws SQLException {
 		int result = 0;
 		
 		PreparedStatement pstm = null;
@@ -43,7 +43,11 @@ public class Crud
 		return result;
 	}
 	
-	
+	private String readSingleStringValue(String query) throws SQLException {
+		StringMapperFunction mapper = new StringMapperFunction();
+		executeQuery(query, new ResultSetFunction(mapper));
+		return mapper.getValue();
+	}
 	
 	public void openConnection() throws SQLException {
 		System.out.println("Connecting ....");
@@ -85,12 +89,10 @@ public class Crud
 			*/
 		};
 		
-		executeQuery(con, "SELECT * FROM user_details ORDER BY user_id", new ResultSetFunction(mapper));
+		executeQuery("SELECT * FROM user_details ORDER BY user_id", new ResultSetFunction(mapper));
 	}
 	
 	public String selectUserNameById(int userId) throws SQLException {
-		StringMapperFunction mapper = new StringMapperFunction("username");
-		executeQuery(con, "SELECT username FROM user_details WHERE user_id=1", new ResultSetFunction(mapper));
-		return mapper.getValue();
+		return readSingleStringValue("SELECT username FROM user_details WHERE user_id=" + userId);
 	}
 }
