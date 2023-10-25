@@ -46,19 +46,9 @@ jobs:
         mvn test
         mvn verify
 
-    - name: Prepare Code Coverage Comment
-      run: echo "Code coverage report is available [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})." > comment.txt
-
-    - name: Print the path of comment.txt
-      run: echo "The full path of comment.txt would be $GITHUB_WORKSPACE/comment.txt"
-
-    - name: Add coverage to PR
-      id: jacoco
-      uses: madrapps/jacoco-report@v1.6.1
+    - name: Archive Jacoco reports
+      uses: actions/upload-artifact@v3
       with:
-        paths: |
-          ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
-          ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
-        token: ${{ secrets.GITHUB_TOKEN }}
-        min-coverage-overall: 40
-        min-coverage-changed-files: 60
+        name: jacoco-reports
+        path: test-coverage/target/site/jacoco
+    
