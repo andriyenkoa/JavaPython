@@ -42,5 +42,5 @@ jobs:
         cd ./java
         mvn compile
         # Uncomment the next line to execute a select * in order to show the result set in the log
-        mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
+        # mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
         
