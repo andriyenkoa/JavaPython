@@ -27,7 +27,7 @@ public class AppTest {
 	}
 	
 	@Test
-	void testUserName() {
+	void testUserName() throws Exception {
 		assertEquals("rogers63", crud.selectUserNameById(1));
 	}
 	
