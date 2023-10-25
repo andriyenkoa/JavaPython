@@ -35,5 +35,5 @@ jobs:
       run: | 
         cd ./java
         mvn compile
-          
+        mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
       
