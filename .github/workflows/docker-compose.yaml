@@ -26,4 +26,13 @@ jobs:
         # For example:
         # - psql -h localhost -U myuser -d mydatabase -c "SELECT 1;"
     
-  
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.9.5
+        
+    - name: Set up JDK 17
+      run: | 
+        cd ./java
+          
+      
