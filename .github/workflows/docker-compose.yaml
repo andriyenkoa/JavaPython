@@ -44,3 +44,12 @@ jobs:
         # Uncomment the next line to execute a select * in order to show the result set in the log
         # mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
         mvn test
+        
+    - name: Generate Code Coverage Report
+      run: mvn jacoco:report
+
+    - name: Post Code Coverage Comment in PR
+      uses: thollander/actions-comment-pull-request@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message: "Code coverage report: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
