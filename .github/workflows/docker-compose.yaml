@@ -44,9 +44,7 @@ jobs:
         # Uncomment the next line to execute a select * in order to show the result set in the log
         # mvn exec:java -Dexec.mainClass="it.unibz.githubactions.Main"
         mvn test
-      
-    - name: Build with Maven and Generate Code Coverage
-      run: mvn clean verify
+        mvn verify
 
     - name: Prepare Code Coverage Comment
       run: echo "Code coverage report is available [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})." > comment.txt
