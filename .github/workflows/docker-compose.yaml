@@ -34,5 +34,6 @@ jobs:
     - name: Set up JDK 17
       run: | 
         cd ./java
+        mvn compile
           
       
