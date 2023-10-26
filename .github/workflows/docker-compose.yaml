@@ -38,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         
     - name: Test the Java part
-      run: | 
+      run: |
         cd ./java
         mvn compile
         # Uncomment the next line to execute a select * in order to show the result set in the log

@@ -1,0 +1,24 @@
+name: Python part
+
+on:
+  workflow_run:
+    workflows: ["PostgreSQL Docker Container"]
+    branches:
+      - main
+      - master
+    types: 
+      - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build and run PostgreSQL container
+      run: |
+        docker build -t my-postgres-image -f Dockerfile .
+        docker run -d --name my-postgres-container -p 5432:5432 my-postgres-image
+    - name: Wait for PostgreSQL to start
+      run: docker exec my-postgres-container sh -c "while ! pg_isready -h localhost; do sleep 1; done"
