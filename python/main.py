@@ -1,7 +1,5 @@
 
 
-
-
 import psycopg2
 
 
@@ -30,9 +28,5 @@ result = cursor.fetchall()
 for row in result:
     print(row)
 
-# Close the cursor and connection
 cursor.close()
 conn.close()
-
-
-
