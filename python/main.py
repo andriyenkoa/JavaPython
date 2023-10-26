@@ -1,6 +1,8 @@
+
+
 import psycopg2
 
-# Database connection parameters
+
 db_params = {
     "dbname": "mydatabase",
     "user": "myuser",

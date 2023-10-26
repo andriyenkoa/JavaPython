@@ -6,7 +6,7 @@ on:
     branches:
       - main
       - master
-    types: 
+    types:
       - completed
 jobs:
   build:
@@ -34,3 +34,10 @@ jobs:
     - name: Run Python tests
       working-directory: python  # Change to your Python folder
       run: python -m unittest my_database_tests.py
+
+    - name: Lint Python code
+      working-directory: python  # Change to your Python folder
+      run: |
+        flake8 main.py
+        autopep8 --in-place --aggressive *.py
+      
