@@ -33,4 +33,4 @@ jobs:
 
     - name: Run Python tests
       working-directory: python  # Change to your Python folder
-      run: python -m unittest my
+      run: python -m unittest my_database_tests.py
