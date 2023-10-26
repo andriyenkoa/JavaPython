@@ -1,5 +1,7 @@
 
 
+
+
 import psycopg2
 
 
@@ -31,3 +33,6 @@ for row in result:
 # Close the cursor and connection
 cursor.close()
 conn.close()
+
+
+
