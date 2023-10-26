@@ -6,7 +6,7 @@ db_params = {
     "user": "myuser",
     "password": "mypassword",
     "host": "localhost",
-    "port": "5433",
+    "port": "5432",
 }
 
 # Connect to the database

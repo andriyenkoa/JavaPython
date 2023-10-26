@@ -22,3 +22,15 @@ jobs:
         docker run -d --name my-postgres-container -p 5432:5432 my-postgres-image
     - name: Wait for PostgreSQL to start
       run: docker exec my-postgres-container sh -c "while ! pg_isready -h localhost; do sleep 1; done"
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x  # Choose the Python version you need
+
+    - name: Install dependencies
+      run: pip install -r python/requirements.txt  # Replace with your requirements file if needed
+
+    - name: Run Python tests
+      working-directory: python  # Change to your Python folder
+      run: python -m unittest my
