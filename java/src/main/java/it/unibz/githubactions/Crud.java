@@ -28,7 +28,7 @@ public class Crud {
 		    System.exit(1);
 		}
 	}
-	
+	aaa
 	private int executeQuery(String query, PreparedStatementFunction dbParam, DBFunction<PreparedStatement> dbFunct) throws SQLException {
 		int result = 0;
 		
