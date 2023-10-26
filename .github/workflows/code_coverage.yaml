@@ -2,7 +2,7 @@ name: Code Coverage
 
 on:
   workflow_run:
-    workflows: ["docker-compose.yaml"]
+    workflows: ["PostgreSQL Docker Container"]
     branches:
       - main
       - master
