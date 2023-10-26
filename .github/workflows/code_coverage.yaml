@@ -1,10 +1,13 @@
 name: Code Coverage
 
 on:
-  push:
+  workflow_run:
+    workflows: ["docker-compose.yaml"]
     branches:
       - main
       - master
+    types: 
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
