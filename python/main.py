@@ -30,3 +30,5 @@ for row in result:
 
 cursor.close()
 conn.close()
+
+
