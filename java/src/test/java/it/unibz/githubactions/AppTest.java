@@ -20,7 +20,7 @@ public class AppTest {
 	}
 	
 	@Test
-	@Disabled
+//	@Disabled
 	void showAll() throws Exception {
 		crud.selectAll();
 		assertTrue(true);
@@ -55,6 +55,11 @@ public class AppTest {
 		crud.update(id, id, oldName, "Paolo", "Proni", "Male", "mypassword", 1);
 		crud.delete(id);
 		crud.commitTransaction();
+	}
+	
+	@Test
+	void longMapper() throws Exception {
+		assertTrue(crud.exists(1));
 	}
 	
 	@AfterAll
