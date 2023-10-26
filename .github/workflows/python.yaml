@@ -38,5 +38,5 @@ jobs:
     - name: Lint Python code
       working-directory: python  # Change to your Python folder
       run: |
-        autopep8 --in-place --aggressive *.py
+        flake8 main.py
       
